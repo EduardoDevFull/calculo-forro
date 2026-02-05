@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calculadora Forro PVC</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ff7a00">
+
+</head>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+</script>
+
+<body>
+
+<header>
+  <h1>Depósito Ipe  </h1>
+  <p>Calculadora Profissional de Forro PVC 20cm</p>
+</header>
+
+<main class="card">
+  <label>Comprimento do ambiente (m)</label>
+  <input type="number" id="comprimento" step="0.01" placeholder="Ex: 3.40">
+
+  <label>Largura do ambiente (m)</label>
+  <input type="number" id="largura" step="0.01" placeholder="Ex: 2.75">
+
+  <label>Preço da placa (R$)</label>
+  <input type="number" id="preco" step="0.01" placeholder="Ex: 32">
+
+  <div class="estoque">
+  <h3>Placas disponíveis no estoque</h3>
+
+  <label><input type="checkbox" value="2" checked> 2 m</label>
+  <label><input type="checkbox" value="3" checked> 3 m</label>
+  <label><input type="checkbox" value="4" checked> 4 m</label>
+  <label><input type="checkbox" value="5" checked> 5 m</label>
+  <label><input type="checkbox" value="6" checked> 6 m</label>
+</div>
+
+
+  <button onclick="calcular()">Calcular Melhor Opção</button>
+
+  <div id="resultado"></div>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
