@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Calculadora Forro PVC</title>
+  <title>Calculadora </title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ff7a00">
@@ -23,7 +23,15 @@
   <p>Calculadora Profissional de Forro PVC 20cm</p>
 </header>
 
-<main class="card">
+<div class="tabs">
+  <button class="tab-btn active" onclick="abrirAba('forro')">Forro PVC</button>
+  <button class="tab-btn" onclick="abrirAba('persiana')">Persiana</button>
+  <button class="tab-btn" onclick="abrirAba('tijolo')">Tijolo / Bloco</button>
+  <button class="tab-btn" onclick="abrirAba('piso')">Piso</button>
+</div>
+
+  <!-- ABA FORRO -->
+<main id="aba-forro" class="card">
   <label>Comprimento do ambiente (m)</label>
   <input type="number" id="comprimento" step="0.01" placeholder="Ex: 3.40">
 
@@ -48,6 +56,89 @@
 
   <div id="resultado"></div>
 </main>
+
+<!-- ABA PERSIANA -->
+<main id="aba-persiana" class="card" style="display:none;">
+  <h3>Cálculo de Persiana</h3>
+
+  <label>Largura (m)</label>
+  <input type="number" id="larguraPersiana" step="0.01">
+
+  <label>Altura (m)</label>
+  <input type="number" id="alturaPersiana" step="0.01">
+
+  <label>Tecido</label>
+  <select id="tecido">
+    <option value="154.9">Tecido 3%</option>
+    <option value="159.9">Tecido 1%</option>
+    <option value="164.9">Blackout</option>
+    <option value="299.9">Double Vision</option>
+  </select>
+
+  <label><input type="checkbox" id="bando"> Com Bando</label>
+  <label><input type="checkbox" id="afastador"> Com Afastador</label>
+
+  <button onclick="calcularPersiana()">Calcular Persiana</button>
+
+  <div id="resultadoPersiana"></div>
+</main>
+
+<main id="aba-tijolo" class="card" style="display:none;">
+  <h3>Cálculo de Tijolos / Blocos</h3>
+
+  <label>Largura da parede (m)</label>
+  <input type="number" id="larguraParede" step="0.01">
+
+  <label>Altura da parede (m)</label>
+  <input type="number" id="alturaParede" step="0.01">
+
+  <label>Tipo de bloco</label>
+  <select id="tipoBloco">
+  <option value="baiano">Bloco Baiano 11,5×14×24</option>
+  <option value="baianinho">Baianinho 9×19×19</option>
+  <option value="concreto">Bloco Concreto 18×18×36</option>
+  <option value="tijolo">Tijolo barro 4,3×9,1×18 (pacote 10)</option>
+</select>
+
+<label>Margem extra para perdas</label>
+<select id="perdaExtra">
+  <option value="0">Sem extra</option>
+  <option value="0.05">+5%</option>
+  <option value="0.10">+10%</option>
+</select>
+
+  <button onclick="calcularTijolo()">Calcular Blocos</button>
+
+  <div id="resultadoTijolo"></div>
+</main>
+
+<main id="aba-piso" class="card" style="display:none;">
+  <h3>Cálculo de Piso</h3>
+
+  <label>Largura do ambiente (m)</label>
+  <input type="number" id="larguraPiso" step="0.01">
+
+  <label>Comprimento do ambiente (m)</label>
+  <input type="number" id="comprimentoPiso" step="0.01">
+
+  <label>OU informe a área direta (m²)</label>
+<input type="number" id="areaDireta" step="0.01" placeholder="Ex: 18">
+
+
+  <label>M² por caixa do piso</label>
+  <input type="number" id="m2Caixa" step="0.01" placeholder="Ex: 2.20">
+
+  <label>
+  <input type="checkbox" id="perdaPiso">
+  Calcular já com 10% de sobra
+</label>
+
+
+  <button onclick="calcularPiso()">Calcular Piso</button>
+
+  <div id="resultadoPiso"></div>
+</main>
+
 
 <script src="script.js"></script>
 </body>
