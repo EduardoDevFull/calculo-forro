@@ -183,11 +183,12 @@ function calcularTijolo() {
   const areaParede = largura * altura;
 
   const pecas = {
-    baiano: { area: 0.25 * 0.15, nome: "Bloco Baiano 11,5×14×24" },
-    baianinho: { area: 0.20 * 0.20, nome: "Baianinho 9×19×19" },
-    concreto: { area: 0.37 * 0.19, nome: "Bloco Concreto 18×18×36" },
-    tijolo: { area: 0.19 * 0.101, nome: "Tijolo barro 4,3×9,1×18" }
-  };
+  baiano: { area: 0.24 * 0.14, nome: "Bloco Baiano 11,5×14×24" },
+  baianinho: { area: 0.19 * 0.19, nome: "Baianinho 9×19×19" },
+  baianao: { area: 0.29 * 0.19, nome: "Bloco Baianão 14×19×29" },
+  concreto: { area: 0.36 * 0.18, nome: "Bloco Concreto 18×18×36" },
+  tijolo: { area: 0.18 * 0.091, nome: "Tijolo barro 4,3×9,1×18" }
+};
 
   const areaPeca = pecas[tipo].area;
   const nome = pecas[tipo].nome;
