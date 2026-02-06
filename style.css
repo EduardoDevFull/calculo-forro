@@ -83,3 +83,25 @@ button {
   margin-right: 15px;
   font-weight: bold;
 }
+
+.tabs {
+  display: flex;
+  max-width: 500px;
+  margin: 20px auto 0;
+  gap: 10px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  background: #ddd;
+  font-weight: bold;
+  border-radius: 6px 6px 0 0;
+}
+
+.tab-btn.active {
+  background: #ff7a00;
+  color: white;
+}
