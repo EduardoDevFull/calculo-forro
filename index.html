@@ -28,7 +28,23 @@
   <button class="tab-btn" onclick="abrirAba('persiana')">Persiana</button>
   <button class="tab-btn" onclick="abrirAba('tijolo')">Tijolo / Bloco</button>
   <button class="tab-btn" onclick="abrirAba('piso')">Piso</button>
+  <button class="tab-btn" onclick="abrirAba('ia')">IA do Depósito</button>
 </div>
+
+<div id="aba-ia" style="display:none;" class="card">
+
+  <div class="ia-box">
+    <h2>🔎 IA do Depósito — Encontre a solução</h2>
+      <input type="text" id="problemaInput" placeholder="Descreva o problema...">
+      <button onclick="buscarSolucao()">Buscar solução</button>
+      <div id="resultadoIA"></div>
+
+
+    <div id="resultadoIA" class="resultado-ia"></div>
+  </div>
+
+</div>
+
 
   <!-- ABA FORRO -->
 <main id="aba-forro" class="card">
@@ -140,7 +156,8 @@
   <div id="resultadoPiso"></div>
 </main>
 
-
+<script src="baseConhecimento.js"></script>
+<script src="ia.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
