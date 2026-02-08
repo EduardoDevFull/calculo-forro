@@ -1,4 +1,37 @@
 
+function normalizarTexto(texto) {
+  return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // remove acentos
+    .replace(/[^\w\s]/g, "") // remove pontuação
+    .trim();
+}
+
+function corrigirErrosComuns(texto) {
+  const erros = {
+    paridi: "parede",
+    paride: "parede",
+    baxo: "baixo",
+    mofada: "mofo",
+    mofado: "mofo",
+    vazano: "vazando",
+    vazandu: "vazando",
+    laj: "laje",
+    pizo: "piso",
+    istufando: "estufando",
+    soltan: "soltando",
+    umido: "umido",
+    umidadee: "umidade",
+    trica: "trinca",
+    rachado: "rachadura"
+  };
+
+  let palavras = texto.split(" ");
+  palavras = palavras.map(p => erros[p] || p);
+  return palavras.join(" ");
+}
+
 
 function calcularOpcao(ladoPlaca, ladoFileiras, preco) {
   const placasDisponiveis = pegarPlacasDisponiveis();
@@ -265,4 +298,82 @@ function calcularPiso() {
       <p><strong>Caixas necessárias:</strong> ${caixas}</p>
     </div>
   `;
+}
+
+function buscarSolucao() {
+  const texto = document.getElementById("problemaInput").value.toLowerCase();
+  const resultadoDiv = document.getElementById("resultadoIA");
+  resultadoDiv.innerHTML = "";
+
+  let melhorPontuacao = 0;
+  let melhorResultado = null;
+
+  baseConhecimento.forEach(item => {
+    let pontuacao = 0;
+
+    item.problema.forEach(p => {
+      const palavrasChave = p.toLowerCase().split(" ");
+
+      palavrasChave.forEach(palavra => {
+        if (texto.includes(palavra)) {
+          pontuacao++;
+        }
+      });
+    });
+
+    if (pontuacao > melhorPontuacao) {
+      melhorPontuacao = pontuacao;
+      melhorResultado = item.solucao;
+    }
+  });
+
+  if (melhorResultado) {
+    const partes = melhorResultado.split("🛒 Produtos indicados:");
+
+    resultadoDiv.innerHTML = `
+      <div class="ia-box">
+        <div class="ia-titulo">🔧 Solução encontrada</div>
+
+        <div class="ia-secao">
+          <strong>✅ Procedimento profissional</strong>
+          ${partes[0].replace(/\n/g, "<br>")}
+        </div>
+
+        <div class="ia-secao">
+          <strong>🛒 Produtos indicados</strong>
+          ${(partes[1] || "").replace(/\n/g, "<br>")}
+        </div>
+      </div>
+    `;
+  } else {
+    resultadoDiv.innerHTML = "Nenhuma solução encontrada.";
+  }
+}
+
+
+function abrirAba(aba) {
+  const abas = ['forro', 'persiana', 'tijolo', 'piso', 'ia'];
+
+  // Esconde todas as abas
+  abas.forEach(a => {
+    const el = document.getElementById('aba-' + a);
+    if (el) el.style.display = 'none';
+  });
+
+  // Remove classe active dos botões
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+  // Mostra a aba escolhida
+  const atual = document.getElementById('aba-' + aba);
+  if (atual) atual.style.display = 'block';
+
+  // Ativa botão
+  const index = abas.indexOf(aba);
+  document.querySelectorAll('.tab-btn')[index].classList.add('active');
+
+  // 🧠 LIMPA O RESULTADO DA IA quando sair dela
+  if (aba !== 'ia') {
+    const r = document.getElementById('resultadoIA');
+    if (r) r.innerHTML = '';
+  }
 }
