@@ -37,7 +37,7 @@
     <h2>🔎 IA do Depósito — Encontre a solução</h2>
       <input type="text" id="problemaInput" placeholder="Descreva o problema...">
       <button onclick="buscarSolucao()">Buscar solução</button>
-      <div id="resultadoIA"></div>
+      
 
 
     <div id="resultadoIA" class="resultado-ia"></div>
@@ -67,6 +67,11 @@
   <label><input type="checkbox" value="6" checked> 6 m</label>
 </div>
 
+<label>Modo de cálculo</label>
+<select id="modoCalculo">
+  <option value="tecnico">🔧 Técnico (sem emendas)</option>
+  <option value="comercial">💰 Comercial (menor desperdício)</option>
+</select>
 
   <button onclick="calcular()">Calcular Melhor Opção</button>
 
@@ -157,7 +162,8 @@
 </main>
 
 <script src="baseConhecimento.js"></script>
-<script src="ia.js"></script>
+<script src="ia.js"></script> 
 <script src="script.js"></script>
 </body>
 </html>
+

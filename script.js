@@ -59,36 +59,101 @@ function calcularOpcao(ladoPlaca, ladoFileiras, preco) {
   return melhor;
 }
 
-function calcularOpcaoComLista(ladoPlaca, ladoFileiras, preco, placasLista) {
+// function calcularOpcaoComLista(ladoPlaca, ladoFileiras, preco, placasLista) {
+//   const fileiras = Math.ceil(ladoFileiras / 0.20);
+
+//   let melhor = null;
+
+//   placasLista.forEach(placa => {
+//     if (placa >= ladoPlaca) {
+//       const corteMetro = placa - ladoPlaca;
+//       const sobraTotal = corteMetro * fileiras;
+
+//       if (!melhor || sobraTotal < melhor.sobraTotal) {
+//         melhor = {
+//           placa,
+//           fileiras,
+//           corteCm: Math.round(corteMetro * 100),
+//           sobraTotal: sobraTotal,
+//           total: fileiras * preco
+//         };
+//       }
+//     }
+//   });
+
+//   return melhor;
+// }
+
+function calcularOpcaoComLista(ladoPlaca, ladoFileiras, preco, placasLista, modo) {
   const fileiras = Math.ceil(ladoFileiras / 0.20);
 
   let melhor = null;
 
   placasLista.forEach(placa => {
-    if (placa >= ladoPlaca) {
-      const corteMetro = placa - ladoPlaca;
-      const sobraTotal = corteMetro * fileiras;
+    if (modo === "tecnico") {
+      // Placa precisa atender o comprimento inteiro
+      if (placa >= ladoPlaca) {
+        const corteMetro = placa - ladoPlaca;
+        const sobraTotal = corteMetro * fileiras;
 
-      if (!melhor || sobraTotal < melhor.sobraTotal) {
-        melhor = {
-          placa,
-          fileiras,
-          corteCm: Math.round(corteMetro * 100),
-          sobraTotal: sobraTotal,
-          total: fileiras * preco
-        };
+        if (!melhor || sobraTotal < melhor.sobraTotal) {
+          melhor = {
+            placa,
+            fileiras,
+            corteCm: Math.round(corteMetro * 100),
+            sobraTotal,
+            total: fileiras * preco,
+            emendas: 0
+          };
+        }
       }
     }
+
+    if (modo === "comercial") {
+  const pecasPorFileira = Math.ceil(ladoPlaca / placa);
+  const emendas = (pecasPorFileira - 1) * fileiras;
+
+  const placasNecessarias = pecasPorFileira * fileiras;
+
+  const sobraPorFileira = (placa * pecasPorFileira) - ladoPlaca;
+  const sobraTotal = sobraPorFileira * fileiras;
+
+  if (!melhor || sobraTotal < melhor.sobraTotal) {
+    melhor = {
+      placa,
+      fileiras,
+      corteCm: Math.round(sobraPorFileira * 100),
+      sobraTotal,
+      total: placasNecessarias * preco,
+      emendas
+    };
+  }
+}
+
   });
+
+  if (!melhor) {
+    return {
+      placa: 0,
+      fileiras: 0,
+      corteCm: 0,
+      sobraTotal: 999999,
+      total: 0,
+      emendas: 0
+    };
+  }
 
   return melhor;
 }
+
 
 
 function calcular() {
   const comprimento = parseFloat(document.getElementById("comprimento").value);
   const largura = parseFloat(document.getElementById("largura").value);
   const preco = parseFloat(document.getElementById("preco").value);
+
+  const modo = document.getElementById("modoCalculo").value;
 
   if (!comprimento || !largura || !preco) {
     alert("Preencha todos os campos!");
@@ -98,19 +163,43 @@ function calcular() {
   const todasPlacas = [2,3,4,5,6];
   const estoquePlacas = pegarPlacasDisponiveis();
 
-  function melhorSentido(placasLista) {
-    const op1 = calcularOpcaoComLista(comprimento, largura, preco, placasLista);
-    const op2 = calcularOpcaoComLista(largura, comprimento, preco, placasLista);
+  // function melhorSentido(placasLista) {
+  //   const op1 = calcularOpcaoComLista(comprimento, largura, preco, placasLista);
+  //   const op2 = calcularOpcaoComLista(largura, comprimento, preco, placasLista);
 
-    if (op1.sobraTotal < op2.sobraTotal) {
-      return { ...op1, sentido: "COMPRIMENTO" };
-    } else {
-      return { ...op2, sentido: "LARGURA" };
-    }
+function melhorOpcao(placasLista) {
+
+  const op1 = calcularOpcaoComLista(
+    comprimento,
+    largura,
+    preco,
+    placasLista,
+    modo
+  );
+
+  const op2 = calcularOpcaoComLista(
+    largura,
+    comprimento,
+    preco,
+    placasLista,
+    modo
+  );
+
+  if (op1.sobraTotal <= op2.sobraTotal) {
+    return {
+      ...op1,
+      sentido: "COMPRIMENTO"
+    };
   }
 
-  const ideal = melhorSentido(todasPlacas);
-  const real = melhorSentido(estoquePlacas);
+  return {
+    ...op2,
+    sentido: "LARGURA"
+  };
+}
+
+const ideal = melhorOpcao(todasPlacas);
+const real = melhorOpcao(estoquePlacas);
 
   const diferenca = (real.sobraTotal - ideal.sobraTotal).toFixed(2);
 
@@ -130,6 +219,8 @@ document.getElementById("resultado").innerHTML = `
     <p><strong>Quantidade de fileiras:</strong> ${real.fileiras}</p>
     <p><strong>Corte necessário por placa:</strong> ${real.corteCm} cm</p>
     <p><strong>Valor total:</strong> R$ ${real.total.toFixed(2)}</p>
+<p><strong>Emendas no teto:</strong> ${real.emendas}</p>
+
 
     <hr style="margin:15px 0">
 
@@ -301,7 +392,10 @@ function calcularPiso() {
 }
 
 function buscarSolucao() {
-  const texto = document.getElementById("problemaInput").value.toLowerCase();
+  let texto = document.getElementById("problemaInput").value;
+
+texto = normalizarTexto(texto);
+texto = corrigirErrosComuns(texto);
   const resultadoDiv = document.getElementById("resultadoIA");
   resultadoDiv.innerHTML = "";
 
@@ -312,7 +406,7 @@ function buscarSolucao() {
     let pontuacao = 0;
 
     item.problema.forEach(p => {
-      const palavrasChave = p.toLowerCase().split(" ");
+      const palavrasChave = normalizarTexto(p).split(" ");
 
       palavrasChave.forEach(palavra => {
         if (texto.includes(palavra)) {
@@ -377,3 +471,4 @@ function abrirAba(aba) {
     if (r) r.innerHTML = '';
   }
 }
+

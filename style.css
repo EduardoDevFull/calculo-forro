@@ -164,3 +164,33 @@ button {
   margin-bottom: 5px;
   color: #ff7a00;
 }
+
+.card-solucao {
+  background: #fff7ef;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  font-family: Arial, sans-serif;
+}
+
+.card-solucao h3 {
+  margin-top: 15px;
+  color: #ff6a00;
+}
+
+.card-solucao .problema {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.passos {
+  padding-left: 20px;
+  line-height: 1.6;
+}
+
+.produtos {
+  padding-left: 20px;
+  line-height: 1.6;
+}
